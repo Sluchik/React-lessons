@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+    <link rel="stylesheet" href="css/style.css" media="screen" title="no title" charset="utf-8">
+</head>
+<body>
+  <div id="example"></div>
+
+  <script type="text/babel">
+
+
+
+  var CARS = [
+    {
+      id: 1,
+      avatar: 'https://cdn-images-1.medium.com/fit/c/36/36/1*MpX2E_7GioADEvtePDPRmA.jpeg',
+      autor:'Stephanie Grimes',
+      img: 'https://cdn-images-1.medium.com/max/360/1*MZaKBbc-YJqYrZgz6jKZiA.jpeg',
+      title:'If you knew what being roofied is like, you wouldn’t make threats like these'
+
+    },
+    {
+      id: 2,
+      avatar: 'https://cdn-images-1.medium.com/fit/c/36/36/1*8C5A3JtI7IfTOdQZ5GyCKA.jpeg',
+      autor:'James Bridle',
+      img: 'https://cdn-images-1.medium.com/fit/t/800/240/1*MFnGkwE6HS65vLPBu5LK-A.gif',
+      title:'At Play on the Field of Ghosts'
+
+    },
+    {
+      id: 3,
+      avatar: 'https://cdn-images-1.medium.com/fit/c/36/36/1*XRHbpeQ0xPOE5vbfB-FLPQ.jpeg',
+      autor:'Neil Renicker',
+      img: 'https://cdn-images-1.medium.com/fit/t/800/240/1*pwlSr2Qq5rcVVTU7SxEAqQ.png',
+      title:'Design Is Mainly About Empathy'
+
+    },
+
+  ];
+
+ var Articl = React.createClass({
+   render: function(){
+     return(
+      <div className="article">
+       <img className="ava" src={this.props.avatar}/>
+       <p>{this.props.autor}</p>
+       <img className="mainImg" src={this.props.img}/>
+       <h1>{this.props.title}</h1>
+       </div>
+     );
+   }
+ });
+
+
+var CarList = React.createClass({
+  render: function(){
+
+    return(
+
+<div >
+        {
+          CARS.map(function(el){
+            return <Articl avatar={el.avatar} autor={el.autor} img={el.img} title={el.title} />;
+          })
+        }
+
+</div>
+    );
+  }
+});
+
+
+  ReactDOM.render(
+    <div >
+        <CarList />
+        </div>,
+    document.getElementById('example')
+  );
+
+</script>
+</body>
+</html>
