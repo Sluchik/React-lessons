@@ -9,34 +9,35 @@
     <link rel="stylesheet" href="css/style.css" media="screen" title="no title" charset="utf-8">
 </head>
 <body>
-    <!-- <div id='content'></div>
-    <script type="text/babel">
-        var HelloWorld = React.createClass({
-            render: function() {
-                return (
-                    <h1> Hello world! </h1>
-                );
-            }
-        });
-        var MyName = React.createClass({
-          render: function(){
-            return(
-              <p>My name is {this.props.name} {this.props.surname}</p>
-            );
-          }
-        });
-
-        ReactDOM.render(
-          <div>
-            <HelloWorld />
-            <MyName name="Andrii" surname="Sloochik" />
-            <HelloWorld />
-            <MyName name="Irina"  surname="Dranovska"/>
-          </div>,
-            document.getElementById('content')
-        );
-    </script> -->
-
+    //  <div id='content'></div>
+    //
+    // <script type="text/babel">
+    //     var HelloWorld = React.createClass({
+    //         render: function() {
+    //             return (
+    //                 <h1> Hello world! </h1>
+    //             );
+    //         }
+    //     });
+    //     var MyName = React.createClass({
+    //       render: function(){
+    //         return(
+    //           <p>My name is {this.props.name} {this.props.surname}</p>
+    //         );
+    //       }
+    //     });
+    //
+    //     ReactDOM.render(
+    //       <div>
+    //         <HelloWorld />
+    //         <MyName name="Andrii" surname="Sloochik" />
+    //         <HelloWorld />
+    //         <MyName name="Irina"  surname="Dranovska"/>
+    //       </div>,
+    //         document.getElementById('content')
+    //     );
+    // </script>
+    //
 
 
 
@@ -91,18 +92,20 @@
                      displeyedContacs: CONTACTS
                    };
                  },
-                  handleSearch: function(event){
+
+                 handleSearch: function(event){
                     var searchQuery = event.target.value.toLowerCase();
-                    var displeyedContacs = CONTACTS.filter(function(el){
+                    var displeyedSearchedContacs = CONTACTS.filter(function(el){
                       var searchValue = el.name.toLowerCase();
                       return searchValue.indexOf(searchQuery) !== -1;
                     });
+
                    this.setState({
-
-                     displeyedContacs:  displeyedContacs
-
+                     displeyedContacs:  displeyedSearchedContacs
                    })
                   },
+
+
                   render: function(){
                     return (
                       <div className="contacts">
@@ -132,6 +135,9 @@
             );
 
         </script>
+
+
+
 
 </body>
 </html>

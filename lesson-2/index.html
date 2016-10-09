@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+
+</head>
+<body>
+
+
+
+<!--
+2 урок
+
+Життевий цикл компонента при ініціалізації(mount)
+
+1. getDefaultProps - відповідає за значення параметра по замовчуванню
+
+  getDefaultProps: function(){
+    return:{
+      name:'',
+      age:0
+    }
+  }
+
+*визивається один раз при ініціалізації класу
+
+2. getInitialState - відповідає за початковиу стан компонента
+
+  getInitialState: function(){
+    return{
+      isOpened: true
+    };
+  }
+
+3. componentWillMount - виклиуається прямо перед рендерінгом компонетта(підготовка)
+4. render
+5. componentDidMount - після рендеринга викликається
+для того щоб використати jquery або повішати якісь івенти.
+це все прописується в цьому методі
+
+
+Коли відбувається зміна параметрів компонента
+відбувається виклик наступних методів
+
+  1.componentWillReceiveProps: function(nextProps){
+
+
+  }
+функція яка отримує nextprops - параметри які наш компонент отримуд(можеа модифікувати стан)
+
+2. shouldComponentUpdate: function(nextProps, nextState){
+returne nextProps.id !==this.props.id
+}
+відповідає за те чи потріпно перемальовувати компонент чи ні
+використовється для оптимізації швидкості
+if true викликаєтьс
+componentWillUpdate: function(nextProps, nextState ){
+
+}
+
+3. render
+
+4. componentDidUpdate
+приходять попередні параметри попереднього стану компонента
+
+ЗМІНА СТАНУ КОМПОНЕНТА(state)
+1. shouldComponentUpdate
+2. componentWillUpdate
+3. render
+4.componentDidUpdate
+
+ДЕМОНТАЖ КОМПОНЕНТА (ВИДАЛЕННЯ З ДОМ ДЕРЕВА)
+
+componentWillUnmount
+
+викликається перед видаленням компонента з дом дерева
+
+уборка за компонентов
+убирає навішані події на компонент перед тим як буде видалений компонент
+
+схема http://prntscr.com/crotgh -->
+
+
+    <div id='content'></div>
+
+<script type="text/babel">
+var Timer = React.createClass({
+  getInitialState: function(){
+    return{
+      second: 0
+    };
+  },
+  componentDidMount: function(){
+    this.timer = setInterval(this.tik, 1000);
+  },
+  componentWillUnmount: function(){
+    clearInterval(this.timer);
+  },
+  tik: function(){
+    this.setState({
+      second: this.state.second + 1
+    });
+  },
+  render: function(){
+      return(
+          <h1>Пройшло {this.state.second} секунд</h1>
+          );
+      }
+  });
+
+ReactDOM.render(
+  <Timer />,
+  document.getElementById('content')
+)
+</script>
+
+
+
+</body>
+</html>
