@@ -44,8 +44,10 @@
 /* 0 */
 /***/ function(module, exports) {
 
-	console.log('Hellow');
-	console.log('Hellow');
+	const name = "Sloocik"
+	const name2 = "Dranovska"
+	console.log(`Hellow${name}`);
+	console.log(`Hellow${name2}`);
 
 
 /***/ }
