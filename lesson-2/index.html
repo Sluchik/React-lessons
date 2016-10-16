@@ -6,6 +6,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
+  <script src="https://unpkg.com/masonry-layout@4.1/dist/masonry.pkgd.min.js"></script>
+    <link rel="stylesheet" href="css/style.css" media="screen" title="no title">
 
 </head>
 <body>
@@ -85,38 +87,185 @@ componentWillUnmount
 схема http://prntscr.com/crotgh -->
 
 
-    <div id='content'></div>
+<div id='content'></div>
+  <div id='note'></div>
+          <script type="text/babel">
 
-<script type="text/babel">
-var Timer = React.createClass({
-  getInitialState: function(){
-    return{
-      second: 0
-    };
-  },
-  componentDidMount: function(){
-    this.timer = setInterval(this.tik, 1000);
-  },
-  componentWillUnmount: function(){
-    clearInterval(this.timer);
-  },
-  tik: function(){
-    this.setState({
-      second: this.state.second + 1
-    });
-  },
-  render: function(){
-      return(
-          <h1>Пройшло {this.state.second} секунд</h1>
-          );
-      }
-  });
+                // var Timer = React.createClass({
+                //   getInitialState: function(){
+                //     return{
+                //       second: 0
+                //     };
+                //   },
+                //   componentDidMount: function(){
+                //     this.timer = setInterval(this.tik, 1000);
+                //   },
+                //   componentWillUnmount: function(){
+                //     clearInterval(this.timer);
+                //   },
+                //   tik: function(){
+                //     this.setState({
+                //       second: this.state.second + 1
+                //     });
+                //   },
+                //   render: function(){
+                //       return(
+                //           <h1>Пройшло {this.state.second} секунд</h1>
+                //           );
+                //       }
+                //   });
+                //
+                // ReactDOM.render(
+                //   <Timer />,
+                //   document.getElementById('content')
+                // )
+                //
+                //
 
-ReactDOM.render(
-  <Timer />,
-  document.getElementById('content')
-)
-</script>
+                // --------------------------------------
+
+
+                var Note = React.createClass({
+
+                  render: function(){
+                    var divStyle = { backgroundColor: this.props.color};
+                    return(
+                      <div className="note" style={ divStyle } >{this.props.children}</div>
+                    );
+                  }
+                });
+
+            var NoteEditor = React.createClass({
+               getInitialState: function(){
+                 return{
+                      text: ''
+                 };
+               },
+               handleTextChange: function(event){
+                 this.setState({text: event.target.value});
+               },
+               handleNoteAdd: function(){
+                 var newNote = {
+                   id: Date.now(),
+                   text: this.state.text,
+                   color:'yellow'
+                 };
+                 this.props.onNoteAdd(newNote);
+                 this.setState({ text: ""});
+               },
+                render: function(){
+                  return(
+                    <div className="note-editor">
+                         <textarea placeholder="Enter your note hear..."
+                                   name=""
+                                   id="" cols="30"
+                                   rows={5}
+                                   className ="textarea"
+                                   value={this.state.text}
+                                   onChange={this.handleTextChange}
+                                   />
+                         <button className="add-button" onClick={this.handleNoteAdd}>Add</button>
+                    </div>
+                    );
+                }
+             });
+
+             var NoteGrid = React.createClass({
+
+                componentDidMount: function(){
+                 var grid = this.refs.grid;
+                 this.msnry = new Masonry( grid, {
+                    itemSelector: '.note',
+                    columnWidth: 10,
+                    gutter:10,
+                    isFitWith: true
+                  });
+
+               },
+               componentDidUpdate: function(prevProps){
+                 if(true){
+                   this.msnry.reloadItems();
+                   this.msnry.layout();
+                   }
+                  console.log('tesr');
+               },
+                render: function(){
+                  return(
+                    <div className="notes-grid" ref="grid">
+                      {
+                        this.props.notes.map(function(note){
+                          return <Note  key={note.id} color={note.color} >{note.text}</Note>;
+                        })
+                      }
+                    </div>
+                  );
+                }
+            });
+
+
+            var NoteApp = React.createClass({
+
+            getInitialState: function(){
+              return {
+                notes:[
+                    {
+                      id:0,
+                      text: "consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et damco laboris nisi ut aliquip ex ea commod",
+                      color:"#c17a76"
+                    },
+                    {
+                      id:1,
+                      text: "Lorem i minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commod",
+                      color:"#4295d5"
+                    },
+                    {
+                      id:3,
+                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna a",
+                      color: "#1e4a4a",
+                    },
+                    {
+                      id:4,
+                      text: "sLorem ipsum doe magna aliqua. Ut enim anostrud exercitation ullamco laboris nisi ut aliquip ex ea commodt",
+                      color:"#2c477a"
+                    },
+                    {
+                      id:5,
+                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod t exercitation ullamco laboris nisi ut aliquip ex ea commod",
+                      color:"#3f4743"
+                   },
+                   {
+                     id:6,
+                     text: " consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et damco laboris nisi ut aliquip ex ea commod",
+                     color:"#c17a76"
+                   }
+
+                ]
+              };
+            },
+
+            handleNoteAdd: function(newNote){
+              var newNotes = this.state.notes.slice(); //копіює масив в нову змінну
+              newNotes.unshift(newNote);
+              this.setState({notes: newNotes});
+            },
+
+            render: function(){
+              return(
+                <div className="notes-app">
+                    <h2 className="notes-header">NotesApp</h2>
+                    <NoteEditor onNoteAdd ={this.handleNoteAdd}/>
+                    <NoteGrid notes={this.state.notes} />
+                </div>
+              );
+            }
+            });
+
+            ReactDOM.render(
+              <NoteApp />,
+              document.getElementById('note')
+            )
+          </script>
+
 
 
 
