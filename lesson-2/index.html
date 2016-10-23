@@ -130,7 +130,10 @@ componentWillUnmount
                   render: function(){
                     var divStyle = { backgroundColor: this.props.color};
                     return(
-                      <div className="note" style={ divStyle } >{this.props.children}</div>
+                      <div className="note" style={ divStyle } >
+                      <span className="delete-note" onClick ={this.props.onDelete}>x</span>
+                      {this.props.children}
+                      </div>
                     );
                   }
                 });
@@ -151,7 +154,7 @@ componentWillUnmount
                  var newNote = {
                    id: Date.now(),
                    text: this.state.text,
-                   color:'yellow'
+                   color:'green'
                  };
                  this.props.onNoteAdd(newNote);
                  this.setState({ text: ""});
@@ -198,11 +201,18 @@ componentWillUnmount
                   console.log('tesr');
                },
                 render: function(){
+                  var onNoteDelete = this.props.onNoteDelete;
                   return(
                     <div className="notes-grid" ref="grid">
                       {
                         this.props.notes.map(function(note){
-                          return <Note  key={note.id} color={note.color} >{note.text}</Note>;
+                          return (
+                            <Note  key={note.id}
+                                   onDelete={onNoteDelete.bind(null, note)}
+                                   color={note.color}>
+                                         {note.text}
+                             </Note>
+                          );
                         })
                       }
                     </div>
@@ -220,11 +230,7 @@ componentWillUnmount
             getInitialState: function(){
               return {
                 notes:[
-                    {
-                      id:0,
-                      text: "consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et damco laboris nisi ut aliquip ex ea commod",
-                      color:"#c17a76"
-                    }
+
                 ]
               };
             },
@@ -234,10 +240,21 @@ componentWillUnmount
                 this.setState({notes: localNotes});
               }
             },
+            componentDidUpdate: function(){
+               this.updateLocalStorage();
+            },
+            handleNoteDelete: function(note){
+              var noteId = note.id;
+              var newNotes = this.state.notes.filter(function(note){
+                  return noteId !== note.id;
+              });
+
+              this.setState({notes: newNotes});
+            },
             handleNoteAdd: function(newNote){
               var newNotes = this.state.notes.slice('notes'); //копіює масив в нову змінну
               newNotes.unshift(newNote);
-              this.setState({notes: newNotes}, this.updateLocalStorage);
+              this.setState({notes: newNotes});
             },
 
             render: function(){
@@ -245,7 +262,7 @@ componentWillUnmount
                 <div className="notes-app">
                     <h2 className="notes-header">NotesApp</h2>
                     <NoteEditor onNoteAdd ={this.handleNoteAdd}/>
-                    <NoteGrid notes={this.state.notes} />
+                    <NoteGrid notes={this.state.notes} onNoteDelete={this.handleNoteDelete} />
                 </div>
               );
             },
