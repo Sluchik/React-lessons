@@ -135,6 +135,9 @@ componentWillUnmount
                   }
                 });
 
+
+
+
             var NoteEditor = React.createClass({
                getInitialState: function(){
                  return{
@@ -170,6 +173,11 @@ componentWillUnmount
                 }
              });
 
+
+
+
+
+
              var NoteGrid = React.createClass({
 
                 componentDidMount: function(){
@@ -203,6 +211,10 @@ componentWillUnmount
             });
 
 
+
+
+
+
             var NoteApp = React.createClass({
 
             getInitialState: function(){
@@ -212,41 +224,20 @@ componentWillUnmount
                       id:0,
                       text: "consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et damco laboris nisi ut aliquip ex ea commod",
                       color:"#c17a76"
-                    },
-                    {
-                      id:1,
-                      text: "Lorem i minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commod",
-                      color:"#4295d5"
-                    },
-                    {
-                      id:3,
-                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna a",
-                      color: "#1e4a4a",
-                    },
-                    {
-                      id:4,
-                      text: "sLorem ipsum doe magna aliqua. Ut enim anostrud exercitation ullamco laboris nisi ut aliquip ex ea commodt",
-                      color:"#2c477a"
-                    },
-                    {
-                      id:5,
-                      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod t exercitation ullamco laboris nisi ut aliquip ex ea commod",
-                      color:"#3f4743"
-                   },
-                   {
-                     id:6,
-                     text: " consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et damco laboris nisi ut aliquip ex ea commod",
-                     color:"#c17a76"
-                   }
-
+                    }
                 ]
               };
             },
-
+            componentDidMount: function(){
+              var localNotes = JSON.parse(localStorage.getItem('notes'));
+              if(localNotes){
+                this.setState({notes: localNotes});
+              }
+            },
             handleNoteAdd: function(newNote){
-              var newNotes = this.state.notes.slice(); //копіює масив в нову змінну
+              var newNotes = this.state.notes.slice('notes'); //копіює масив в нову змінну
               newNotes.unshift(newNote);
-              this.setState({notes: newNotes});
+              this.setState({notes: newNotes}, this.updateLocalStorage);
             },
 
             render: function(){
@@ -257,7 +248,13 @@ componentWillUnmount
                     <NoteGrid notes={this.state.notes} />
                 </div>
               );
+            },
+
+            updateLocalStorage: function(){
+              var notes = JSON.stringify(this.state.notes);
+              localStorage.setItem('notes', notes);
             }
+
             });
 
             ReactDOM.render(
